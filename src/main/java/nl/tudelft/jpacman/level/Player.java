@@ -19,6 +19,9 @@ public class Player extends Unit {
      */
     private int score;
 
+
+    private int lives;
+
     /**
      * The animations for every direction.
      */
@@ -48,6 +51,7 @@ public class Player extends Unit {
      *            The sprite to be shown when this player dies.
      */
     protected Player(Map<Direction, Sprite> spriteMap, AnimatedSprite deathAnimation) {
+        this.lives = 3;
         this.score = 0;
         this.alive = true;
         this.sprites = spriteMap;
@@ -67,20 +71,22 @@ public class Player extends Unit {
     /**
      * Sets whether this player is alive or not.
      *
-     * If the player comes back alive, the {@link killer} will be reset.
+     * If the player comes back alive, the {@link } will be reset.
      *
-     * @param isAlive
      *            <code>true</code> iff this player is alive.
      */
-    public void setAlive(boolean isAlive) {
-        if (isAlive) {
+    public void hitTaken() {
+        this.lives--;
+        System.out.println("collision, lives: " + this.lives);
+
+        if (this.lives > 0) {
             deathSprite.setAnimating(false);
             this.killer = null;
         }
-        if (!isAlive) {
+        else{
             deathSprite.restart();
         }
-        this.alive = isAlive;
+        this.alive = this.lives > 0;
     }
 
     /**
@@ -108,6 +114,10 @@ public class Player extends Unit {
      */
     public int getScore() {
         return score;
+    }
+
+    public int getLives() {
+        return lives;
     }
 
     @Override
